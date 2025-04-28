@@ -24,13 +24,17 @@ def buscar_aluno_view(id_aluno):
 
 @aluno_blueprint.route('/alunos', methods=['POST'])
 def adicionar_aluno_view():
-    dados = request.get_json()
-    resultado, status = adicionar_aluno(dados)
-    return jsonify(resultado), status
+    try:
+        dados = request.json
+        resultado, status = adicionar_aluno(dados)
+        return jsonify(resultado), status
+    except AlunoNaoEncontrado as error:
+        return jsonify({'Mensagem':f'Erro na rota de alunos {error}'}),404
+     
 
 @aluno_blueprint.route('/alunos/<int:id_aluno>', methods=['PUT'])
 def atualizar_aluno_view(id_aluno):
-    dados = request.get_json()
+    dados = request.json
     try:
         resultado, status = atualizar_aluno(id_aluno, dados)
         return jsonify(resultado), status

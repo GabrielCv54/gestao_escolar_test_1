@@ -25,9 +25,12 @@ def get_turma(id_turma):
 
 @turmas_blueprint.route('/turma', methods=['POST'])
 def adicionar_turma_view():
-    dados = request.json
-    resultado, status = adicionar_turma(dados)
-    return jsonify(resultado), status
+        try:
+            dados = request.json
+            resultado, status = adicionar_turma(dados)
+            return jsonify(resultado), status
+        except TurmaNaoEncontrada as erro:
+            return jsonify({'Mensagem':f'Erro na rota de turma:{str(erro)}'})
 
 @turmas_blueprint.route('/turma/<int:id_turma>', methods=['PUT'])
 def update(id_turma):

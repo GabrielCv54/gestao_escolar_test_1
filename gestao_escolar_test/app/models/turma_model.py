@@ -29,10 +29,10 @@ def buscar_turma(id):
 
 def listar_turmas():
     turmas = Turma.query.all()
-    return {turma.to_dicionario() for turma in turmas}
+    return [turma.to_dicionario() for turma in turmas]
     
 def adicionar_turma(dados):
-    professor = Docente(id=dados['id'],idade=dados['idade'],materia=dados['materia'],observacoes=dados['observacoes'])
+    professor = Docente.query.get(dados['professor_id'])
     if professor is None:
         return {'Mensagem de erro': 'O professor não existe!'},404
     nova_turma = Turma(
@@ -43,7 +43,7 @@ def adicionar_turma(dados):
     )
     db.session.add(nova_turma)
     db.session.commit()
-    return{'Turma foi adicionada!'},201
+    return{'Mensagem':'Turma foi adicionada!'},201
 
 def atualizar_turma(id,new_data):
     turma = Turma.query.get(id)
@@ -62,7 +62,7 @@ def deletar_turma(id):
         raise TurmaNaoEncontrada ("A turma não foi encontrada!!")
     db.session.delete(turma)
     db.session.commit()
-    return {'Mensagem de exclusão':'Turma deletada !'}
+    return {'Mensagem de exclusão':'Turma deletada !'},200
 
 def limpar_turmas():
     turmas = Turma.query.all()

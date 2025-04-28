@@ -6,8 +6,8 @@ class Docente(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     nome = db.Column(db.String(100),nullable=False)
     idade = db.Column(db.Integer,nullable=False)
-    materia = db.Column(db.String,nullable=False)
-    observacoes = db.Column(db.String,nullable=False)
+    materia = db.Column(db.String(50),nullable=False)
+    observacoes = db.Column(db.String(150),nullable=False)
     
     def __init__(self,id,nome,idade,materia,observacoes):
         self.id = id
