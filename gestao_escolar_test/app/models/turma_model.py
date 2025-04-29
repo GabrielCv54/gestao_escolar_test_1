@@ -69,5 +69,5 @@ def limpar_turmas():
     for turma in turmas:
         db.session.delete(turma)
         db.session.commit()
-        return {},200
+    return {},200
 

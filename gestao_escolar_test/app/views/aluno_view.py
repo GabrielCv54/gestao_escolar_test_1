@@ -30,7 +30,6 @@ def adicionar_aluno_view():
         return jsonify(resultado), status
     except AlunoNaoEncontrado as error:
         return jsonify({'Mensagem':f'Erro na rota de alunos {error}'}),404
-     
 
 @aluno_blueprint.route('/alunos/<int:id_aluno>', methods=['PUT'])
 def atualizar_aluno_view(id_aluno):
