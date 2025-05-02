@@ -1,4 +1,5 @@
 from ..config import db 
+from datetime import date
 from ..models.turma_model import Turma
 
 class Aluno(db.Model):
