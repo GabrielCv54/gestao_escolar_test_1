@@ -1,9 +1,9 @@
 from flask_restx import Namespace,Resource,fields
 from models.aluno_model import ( limpar_alunos,listar_alunos,adicionar_aluno,atualizar_aluno,buscar_aluno,deletar_aluno)
 
-alunos_ns = Namespace('alunos',description='Operação relacionada a alunos')
+aluno_ns = Namespace('alunos',description='Operação relacionada a alunos')
 
-aluno_model = alunos_ns.model("Aluno",{
+aluno_model = aluno_ns.model("Aluno",{
      "nome":fields.String(required=True,description="Nome do aluno"),
      "idade":fields.Integer(required=True,description='Idade do aluno'),
      "nota_primeiro_semestre": fields.Float(required=True,description="Nota do primeiro semestre"),
@@ -12,7 +12,7 @@ aluno_model = alunos_ns.model("Aluno",{
    
 })
 
-aluno_output_model = alunos_ns.model("AlunoOutput",{
+aluno_output_model = aluno_ns.model("AlunoOutput",{
 "id":fields.Integer(description="Id do aluno"),
 "nome":fields.String(description='Nome do aluno'),
 "idade":fields.Integer(description="Idade do aluno"),
@@ -21,30 +21,34 @@ aluno_output_model = alunos_ns.model("AlunoOutput",{
 'turma_id':fields.Integer(description='O id da turma do qual está associdado')
 })
 
-@alunos_ns.route("/")
+@aluno_ns.route("/")
 class AlunoResource(Resource):
-    @alunos_ns.marshal_list_with(aluno_output_model)
+    @aluno_ns.marshal_list_with(aluno_output_model)
     def getAlunos(self):
         return listar_alunos()
 
+    @aluno_ns.expect(aluno_model)
     def postAluno(self):
-        aluno = alunos_ns.payload
+        aluno = aluno_ns.payload
         response,status_code = adicionar_aluno(aluno)
         return response,status_code
 
-@alunos_ns.route('/<int:id>')
+@aluno_ns.route('/<int:id>')
 class AlunoIdResource(Resource):
-    @alunos_ns.marshal_with(aluno_output_model)
+    @aluno_ns.marshal_with(aluno_output_model)
     def get(self,id_aluno):
         return buscar_aluno(id_aluno)
     
-    @alunos_ns.expect(aluno_output_model)
+    @aluno_ns.expect(aluno_output_model)
     def putAluno(self,id):
-        dados = alunos_ns.payload
+        dados = aluno_ns.payload
         atualizar_aluno(id,dados)
         return dados,201
     
     def DeleteAluno(self,id):
         deletar_aluno(id)
         return {'Mensagem':f'O aluno com id {id} foi excluído!!'}
-        
+    
+    def DeletarTodos():
+        limpar_alunos()
+        return [],200

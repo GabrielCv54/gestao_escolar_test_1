@@ -1,4 +1,5 @@
 from flask_restx import Resource,Namespace,fields
+from models.turma_model import (adicionar_turma,atualizar_turma,buscar_turma,deletar_turma,limpar_turmas,listar_turmas)
 
 turma_ns = Namespace('Turmas',description='Operação relacionada as turmas')
 
@@ -15,3 +16,34 @@ turma_output_model = turma_ns.model('TurmaOutput',{
   'ativo':fields.Boolean(description='Situação da turma')
 })
 
+
+@turma_ns.route('/')
+class TurmaResource(Resource):
+    @turma_ns.marshal_list_with(turma_output_model)
+    def GetTurmas():
+        return listar_turmas()
+
+    @turma_ns.expect(turma_model)
+    def PostTurma(self):
+        nova_turma = turma_ns.payload
+        response,status_code = adicionar_turma(nova_turma)
+        return response,status_code
+    
+@turma_ns.route('<int:id>')
+class TurmaIdResource(Resource):
+    @turma_ns.marshal_with(turma_output_model)
+    def GetTurma(self,id):
+        return buscar_turma(id)
+    
+    @turma_ns.expect(turma_model)
+    def PutTurma(self,id):
+        data = turma_ns.payload
+        atualizar_turma(id,data)
+        return data,201
+    
+    def DeleteTurma(self,id):
+        deletar_turma(id)
+        return {'Mensagem':'Turma deletada !!'},200
+    
+    def DeleteAllTurmas():
+        return limpar_turmas()

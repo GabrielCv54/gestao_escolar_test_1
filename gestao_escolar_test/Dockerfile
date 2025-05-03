@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 #Define o caminho que vai inicializar a aplicação
-CMD ["python","-m","gestao_escolar_test.app.app"]
+CMD ["python","-m","app.app"]
