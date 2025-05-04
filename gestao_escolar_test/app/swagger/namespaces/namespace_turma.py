@@ -12,7 +12,7 @@ turma_model = turma_ns.model('Turma',{
 
 turma_output_model = turma_ns.model('TurmaOutput',{
   'id':fields.Integer(description='Id da turma'),
-  'descrição':fields.String(description='Descrição sobre a turma'),
+  'descricao':fields.String(description='Descrição sobre a turma'),
   'professor_id':fields.Integer(description='Id do professor responsável pela turma'),
   'ativo':fields.Boolean(description='Situação da turma')
 })

@@ -18,8 +18,7 @@ def listar_docentes_view():
 @docentes_blueprint.route('/docente/<int:id_docente>', methods=['GET'])
 def get_docente(id_docente):
     try:
-        docente = buscar_docente(id_docente)
-        return jsonify(docente)
+        return jsonify(buscar_docente(id_docente))
     except DocenteNaoEncontrado:
         return jsonify({'erro': 'Docente não encontrado'}), 404
 

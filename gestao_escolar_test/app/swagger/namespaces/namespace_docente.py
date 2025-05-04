@@ -35,15 +35,15 @@ class DocenteResource(Resource):
 @docente_ns.route('/<int:id>')
 class DocenteIdResource(Resource):
     @docente_ns.marshal_with(docente_output_model)
-    def get(id):
+    def get(self,id):
         return buscar_docente(id)
 
     @docente_ns.expect(docente_model)
-    def put(id):
+    def put(self,id):
         dados = docente_ns.payload
         atualizar_docente(id,dados)
         return dados,201
     
-    def delete(id):
+    def delete(self,id):
         deletar_docente(id)
         return {'Mensagem':'Docente excluído '},200

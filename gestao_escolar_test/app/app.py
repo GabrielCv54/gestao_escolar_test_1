@@ -1,4 +1,4 @@
-from app.swagger.swagger_config import configure_swagger
+from .swagger.swagger_config import configure_swagger
 import sys
 import os
 from .views.aluno_view import aluno_blueprint
