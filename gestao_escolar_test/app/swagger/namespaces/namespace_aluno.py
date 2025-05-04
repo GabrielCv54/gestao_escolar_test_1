@@ -1,5 +1,5 @@
 from flask_restx import Namespace,Resource,fields
-from models.aluno_model import ( limpar_alunos,listar_alunos,adicionar_aluno,atualizar_aluno,buscar_aluno,deletar_aluno)
+from ...models.aluno_model import ( limpar_alunos,listar_alunos,adicionar_aluno,atualizar_aluno,buscar_aluno,deletar_aluno)
 
 aluno_ns = Namespace('alunos',description='Operação relacionada a alunos')
 
@@ -24,11 +24,11 @@ aluno_output_model = aluno_ns.model("AlunoOutput",{
 @aluno_ns.route("/")
 class AlunoResource(Resource):
     @aluno_ns.marshal_list_with(aluno_output_model)
-    def getAlunos(self):
+    def get(self):
         return listar_alunos()
 
     @aluno_ns.expect(aluno_model)
-    def postAluno(self):
+    def post(self):
         aluno = aluno_ns.payload
         response,status_code = adicionar_aluno(aluno)
         return response,status_code
@@ -39,16 +39,14 @@ class AlunoIdResource(Resource):
     def get(self,id_aluno):
         return buscar_aluno(id_aluno)
     
-    @aluno_ns.expect(aluno_output_model)
-    def putAluno(self,id):
+    @aluno_ns.expect(aluno_model)
+    def put(self,id):
         dados = aluno_ns.payload
         atualizar_aluno(id,dados)
         return dados,201
     
-    def DeleteAluno(self,id):
+    def delete(self,id):
         deletar_aluno(id)
-        return {'Mensagem':f'O aluno com id {id} foi excluído!!'}
+        return {'Mensagem':f'O aluno com id {id} foi excluído!!'},200
     
-    def DeletarTodos():
-        limpar_alunos()
-        return [],200
+   
